@@ -1,8 +1,8 @@
 <template>
   <nav >
-  <router-link to="./money" class="item"><Icon name="money"/>记账</router-link>
-    <router-link to="./label" class="item"> <Icon name="label"/>标签  </router-link>
-  <router-link to="./statistics" class="item"><Icon name="statistics"/>数据分析</router-link>
+  <router-link to="./money" class="item" active-class="selected"><Icon name="money"/>记账</router-link>
+    <router-link to="./label" class="item" active-class="selected"> <Icon name="label"/>明细 </router-link>
+  <router-link to="./statistics" class="item" active-class="selected"><Icon name="statistics"/>数据分析</router-link>
 </nav>
 </template >
 <script lang="ts">
@@ -27,15 +27,14 @@ export default {
       width: 33.33333%;
       justify-content: center;
       align-items: center;
-
-
-
       .icon{
         height:28px;
         width:28px;
       }
     }
-
+   > .item.selected{
+  color:red;
+     }
   }
 
 </style>
