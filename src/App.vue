@@ -1,7 +1,7 @@
 <template>
-  <div >
+
     <router-view/>
-  </div>
+
 </template>
 
 <style lang="scss">
@@ -11,6 +11,7 @@
     font-family: $font-hei;
     line-height: 1.5;
   }
+
 
 #app {
 
