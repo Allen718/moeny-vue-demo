@@ -59,7 +59,7 @@
     clear(){
       this.output='0'
     }
-   
+
   }
 
 
