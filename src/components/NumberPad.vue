@@ -13,7 +13,7 @@
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
-      <button class="ok" >ok</button>
+      <button class="ok" @click="ok">ok</button>
       <button class="zero" @click="inputContent">0</button>
       <button @click="inputContent">.</button>
     </div>
@@ -57,6 +57,11 @@
       }
     }
     clear(){
+      this.output='0'
+    }
+    ok(){
+      this.$emit('update:value',this.output)
+      this.$emit('submit')
       this.output='0'
     }
 

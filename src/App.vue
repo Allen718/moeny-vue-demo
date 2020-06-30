@@ -1,7 +1,5 @@
 <template>
-
     <router-view/>
-
 </template>
 
 <style lang="scss">
@@ -10,6 +8,7 @@
   body{
     font-family: $font-hei;
     line-height: 1.5;
+      background:#f5f5f5 ;
   }
 
 

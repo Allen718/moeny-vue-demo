@@ -24,11 +24,12 @@
       }else{
     this.selectedTags.push(tag)
       }
+      this.$emit('update:value',this.selectedTags)
     }
     create() {
       const name = window.prompt('请输入标签名')
       if (name === '') {
-        window.alert('标签名不能为空')
+        return window.alert('标签名不能为空')
       } else if (this.dataSource) {
         this.$emit('update:dataSource', [...this.dataSource, name])
 
