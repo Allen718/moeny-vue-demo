@@ -19,40 +19,41 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import {Component, Prop} from 'vue-property-decorator';
-  import tagListModel from '@/models/taglistModel';
+  import {Component} from 'vue-property-decorator';
   import Notes from '@/components/Notes.vue';
   import Button from '@/components/Button.vue';
+  import store from '@/store/index2';
   @Component({
     components: {Button, Notes}
   })
   export default class LabelEdit extends Vue {
-tag?: {id: string;name: string}=undefined
+    tag?: {id: string;name: string}=undefined
   created(){
     const id=this.$route.params.id;
-    tagListModel.fetch()
-    const tags=tagListModel.data
-    const tag=tags.filter(t=>t.id===id)[0]
+    // const tags=window.tagList
+    const tag=store.getTag(id)
     if(tag){
        this.tag=tag
-      console.log(tag);
     }else{
       this.$router.replace('/404')
     }
   }
   updateTag(name: string){
   if(this.tag){
-    tagListModel.update(this.tag.id,name)
+    store.updateTag(this.tag.id,name)
   }
   }
   removeTag(){
   if(this.tag){
-    if(tagListModel.remove(this.tag.id)){
-      this.$router.back()
+if(store.removeTag(this.tag.id)){
+  this.$router.back()
+}else{
+  alert('删除失败')
+}
     }
 
   }
-    }
+
   goBack(){
     this.$router.back()
     }

@@ -5,10 +5,7 @@ type RecordItem = {
   amount: number;
   createdAt?: Date;
 }
-interface Window {
-  tagList: Tag[];
-  createTag: (name: string) => void;
-}
+
 type Tag ={
   id: string;
   name: string;
