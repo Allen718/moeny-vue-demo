@@ -47,8 +47,10 @@ tag?: {id: string;name: string}=undefined
   }
   removeTag(){
   if(this.tag){
+    if(tagListModel.remove(this.tag.id)){
+      this.$router.back()
+    }
 
-  tagListModel.remove(this.tag.id)
   }
     }
   goBack(){

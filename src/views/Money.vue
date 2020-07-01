@@ -53,13 +53,11 @@
     this.record.amount=parseFloat(value)
     }
     saveRecord(){
-      const record2=model.clone(this.record)
-      record2.createdAt=new Date()
-      recordList.push(record2)
+    model.create(this.record)
     }
     @Watch('recordList')
     onRecordListChanged(){
-      model.save(recordList)
+      model.save()
     }
 
   }
