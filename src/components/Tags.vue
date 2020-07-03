@@ -12,24 +12,21 @@
 
 <script lang="ts">
   import Vue from "vue"
-
-
-
-
+  import {Component} from 'vue-property-decorator';
+  @Component
   export default class Tags extends Vue {
    get tagList(){
-      return this.$store.state.tagList
+      return this.$store.state.tagList as Tag[]
     }
-  selectedTags: Tag[]=[]
-    toggle(tag: Tag){
-    const index=this.selectedTags.indexOf(tag)
-      if(this.selectedTags.indexOf(tag)>=0){
-        this.selectedTags.splice(index,1)
-      }else{
-    this.selectedTags.push(tag)
+    selectedTags: Tag[] = [];
+    toggle(tag: Tag) {
+      const index = this.selectedTags.indexOf(tag);
+      if (index >= 0) {
+        this.selectedTags.splice(index, 1);
+      } else {
+        this.selectedTags.push(tag);
       }
-      this.$emit('update:value',this.selectedTags)
-
+      this.$emit('update:value', this.selectedTags);
     }
     create() {
       const name = window.prompt('请输入标签名')
@@ -41,7 +38,9 @@
       }
         }
     created(){
+
     this.$store.commit('fetchTag')
+
         }
   }
 </script>

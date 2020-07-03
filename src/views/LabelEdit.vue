@@ -29,7 +29,7 @@
 
   export default class LabelEdit extends Vue {
     get tag() {
-      return this.$store.state.CurrentTag
+      return this.$store.state.CurrentTag as Tag
     }
 
     created() {

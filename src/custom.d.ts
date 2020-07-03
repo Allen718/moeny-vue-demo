@@ -3,9 +3,9 @@ type RecordItem = {
   notes: string;
   type: string;
   amount: number;
-  createdAt?: Date;
+  createdAt?: string;
 }
-
+type RecordList=RecordItem[]
 type Tag ={
   id: string;
   name: string;
@@ -18,3 +18,8 @@ type Tag ={
 //   remove: (id: string) => boolean;
 //   save: () => void;
 // }
+type RootState={
+  recordList: RecordItem[];
+  tagList: Tag[];
+  CurrentTag?: Tag;
+}

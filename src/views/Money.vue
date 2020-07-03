@@ -14,20 +14,19 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import NumberPad from '@/components/NumberPad.vue';
-  import Types from '@/components/Types.vue';
   import Notes from '@/components/Notes.vue';
   import Tags from '@/components/Tags.vue';
   import Tabs from '@/components/Tabs.vue';
   import recordtypeList from '@/constants/recordtypeList';
 
   @Component(
-    {components: {Tabs, Tags, Notes, Types, NumberPad},
+    {components: {Tabs, Tags, Notes, NumberPad},
    },
   )
 
   export default class Money extends Vue {
 get recordList(){
-  return this.$store.state.recordList
+  return this.$store.state.recordList as RecordItem[]
 }
     record: RecordItem={
       tags:[],
