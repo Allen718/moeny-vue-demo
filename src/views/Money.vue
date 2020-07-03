@@ -1,11 +1,11 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad @update:value="onUpdateAmount" @submit="saveRecord"/>
-    <Types :value.sync="record.type"/>
+    <tabs :data-source="recordtypeList" :value.sync="type"/>
     <div class="notesWrapper">
     <Notes @update:value="onUpdateNotes" field-name="备注" placeholder="在这里输入备注"/>
     </div>
-    <Tags :data-source.sync="tags" @update:value="onUpdateTags"/>
+    <Tags @update:value="onUpdateTags"/>
   </Layout>
 
 </template>
@@ -17,16 +17,18 @@
   import Types from '@/components/Types.vue';
   import Notes from '@/components/Notes.vue';
   import Tags from '@/components/Tags.vue';
-  import store from '@/store/index2';
-
-
-  const recordList=store.recordList
+  import Tabs from '@/components/Tabs.vue';
+  import recordtypeList from '@/constants/recordtypeList';
 
   @Component(
-    {components: {Tags, Notes, Types, NumberPad}})
+    {components: {Tabs, Tags, Notes, Types, NumberPad},
+   },
+  )
 
   export default class Money extends Vue {
-    tags = store.tagList;
+get recordList(){
+  return this.$store.state.recordList
+}
     record: RecordItem={
       tags:[],
     notes:'',
@@ -34,27 +36,28 @@
     amount:0 ,
 
   }
-   recordList?: RecordItem[]=recordList
+  recordtypeList=recordtypeList
+type='-'
 
 
+created(){
+      this.$store.commit('fetchRecord')
+}
 
-    onUpdateTags(value: string[]) {
-      this.record.tags=value;
-    }
+
 
     onUpdateNotes(value: string) {
       this.record.notes =value
     }
 
-    // onUpdateType(value: string) {
-    //   this.record.type=value
-    // }
-
+onUpdateTags(value: Tag[]){
+      this.record.tags=value
+}
     onUpdateAmount(value: string) {
     this.record.amount=parseFloat(value)
     }
     saveRecord(){
-   store.createRecord(this.record)
+      this.$store.commit('createRecord',this.record)
     }
 
 

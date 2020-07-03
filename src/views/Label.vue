@@ -12,7 +12,6 @@
         </div>
     <div class="createTag-wrapper">
       <Button @click="createTag">新增</Button>
-
     </div>
   </Layout>
 </template>
@@ -20,21 +19,24 @@
 <script lang="ts">
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator';
-import store from '@/store/index2'
   import Button from '@/components/Button.vue';
 
   @Component({
     components: {Button}
   })
   export default class Label extends Vue{
-    tags=store.tagList
+   get tags(){
+      return this.$store.state.tagList
+    }
+beforeCreate(){
+  this.$store.commit('fetchTag')
+}
     createTag(){
     const name=  window.prompt('请输入标签名')
       if(name){
-      store.createTag(name)
+      this.$store.commit('createTag',name)
       }
-    }
-  }
+  }}
 </script>
 
 <style lang="scss" scoped>

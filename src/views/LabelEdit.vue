@@ -9,7 +9,7 @@
     <Notes field-name="标签名"
            placeholder="在这里编辑标签"
            :value="tag.name"
-              @update:value="updateTag" />
+           @update:value="updateTag" />
     </div>
     <div class="button-wrapper">
       <Button @click="removeTag">删除标签</Button>
@@ -22,43 +22,43 @@
   import {Component} from 'vue-property-decorator';
   import Notes from '@/components/Notes.vue';
   import Button from '@/components/Button.vue';
-  import store from '@/store/index2';
+
   @Component({
-    components: {Button, Notes}
-  })
+    components: {Button, Notes}})
+
+
   export default class LabelEdit extends Vue {
-    tag?: {id: string;name: string}=undefined
-  created(){
-    const id=this.$route.params.id;
-    // const tags=window.tagList
-    const tag=store.getTag(id)
-    if(tag){
-       this.tag=tag
-    }else{
-      this.$router.replace('/404')
-    }
-  }
-  updateTag(name: string){
-  if(this.tag){
-    store.updateTag(this.tag.id,name)
-  }
-  }
-  removeTag(){
-  if(this.tag){
-if(store.removeTag(this.tag.id)){
-  this.$router.back()
-}else{
-  alert('删除失败')
-}
+    get tag() {
+      return this.$store.state.CurrentTag
     }
 
-  }
-
-  goBack(){
-    this.$router.back()
+    created() {
+      const id = this.$route.params.id;
+      this.$store.commit('fetchTag')
+      this.$store.commit('setCurrentTag', id)
+      if (!this.tag) {
+        this.$router.replace('/404')
+      }
     }
 
+    updateTag(name: string) {
+      if (this.tag) {
+        this.$store.commit('updateTag', name)
+      }
+    }
+
+    removeTag() {
+      if (this.tag) {
+      this.$store.commit('removeTag',this.tag.id)
+      }
+
+    }
+    goBack(){
+      this.$router.back()
+    }
   }
+
+
 </script>
 
 <style lang="scss" scoped>

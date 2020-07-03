@@ -3,8 +3,6 @@ import clone from '@/lib/clone';
 const localStorageKeyName='recordList'
 let  data: RecordItem[]|undefined=undefined
 
-
-
 const recordStore= {
   saveRecord(){
     window.localStorage.setItem(localStorageKeyName,JSON.stringify(data))
