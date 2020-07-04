@@ -1,9 +1,13 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad @update:value="onUpdateAmount" @submit="saveRecord"/>
-    <tabs :data-source="recordtypeList" :value.sync="type"/>
+    <tabs  @update:value="onUpdateType"
+      :data-source="recordtypeList" :value.sync="type"/>
     <div class="notesWrapper">
-    <Notes @update:value="onUpdateNotes" field-name="备注" placeholder="在这里输入备注"/>
+    <Notes @update:value="onUpdateNotes"
+           field-name="备注"
+           :value="record.notes"
+           placeholder="在这里输入备注"/>
     </div>
     <Tags @update:value="onUpdateTags"/>
   </Layout>
@@ -36,7 +40,8 @@ get recordList(){
 
   }
   recordtypeList=recordtypeList
-type='-'
+   type='-'
+
 
 
 created(){
@@ -49,14 +54,18 @@ created(){
       this.record.notes =value
     }
 
-onUpdateTags(value: Tag[]){
+     onUpdateTags(value: Tag[]){
       this.record.tags=value
+}
+onUpdateType(value: string){
+  this.record.type=value
 }
     onUpdateAmount(value: string) {
     this.record.amount=parseFloat(value)
     }
     saveRecord(){
       this.$store.commit('createRecord',this.record)
+      this.record.notes=''
     }
 
 

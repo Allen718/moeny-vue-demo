@@ -22,7 +22,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component} from 'vue-property-decorator';
+  import {Component, Prop} from 'vue-property-decorator';
 
   @Component
   export default class NumberPad extends Vue {
@@ -60,7 +60,7 @@
       this.output='0'
     }
     ok(){
-      this.$emit('update:value',this.output)
+      this.$emit('update:value',parseFloat(this.output))
       this.$emit('submit')
       this.output='0'
     }

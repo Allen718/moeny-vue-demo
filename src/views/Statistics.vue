@@ -1,106 +1,133 @@
 <template>
   <Layout>
-    <tabs :data-source="recordtypeList" :value.sync="type" class-prefix="tags" />
-    <tabs :data-source="intervalList" :value.sync="interval" class-prefix="interval"/>
-
-      <ol>
-        <li v-for="(groups,index) in result" :key="index">
-         <h3 class="title">
-           {{groups.title}}
-         </h3>
-          <ol>
-            <li v-for="item in groups.items" :key="item.id"
-                class="record" >
-              <span>{{tagString(item.tags)}}</span>
-              <span class="notes">{{item.notes}}</span>
-              <span>￥{{item.amount}} </span>
-            </li>
-          </ol>
+    <tabs :data-source="recordtypeList" :value.sync="type" class-prefix="tags"/>
+    <ol>
+      <li v-for="(group,index) in groupList" :key="index">
+        <h3 class="title">
+          {{beautify(group.title)}}<span>{{group.total}}</span>
+        </h3>
+        <ol>
+          <li v-for="item in group.items" :key="item.id"
+              class="record">
+            <span>{{tagString(item.tags)}}</span>
+            <span class="notes">{{item.notes}}</span>
+            <span>￥{{item.amount}} </span>
           </li>
-      </ol>
+        </ol>
+      </li>
+    </ol>
 
   </Layout>
 </template>
 
 <script lang="ts">
   import Types from '@/components/Types.vue';
-  import Vue from 'vue'
+  import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import Tabs from '@/components/Tabs.vue';
-  import intervalList from '@/constants/intervalList';
   import recordtypeList from '@/constants/recordtypeList';
+  import dayjs from 'dayjs';
+  import clone from '@/lib/clone';
+
   @Component({
       components: {Tabs, Types}
-  }
-
+    }
   )
   export default class Statistics extends Vue {
-    get recordList(){
-      return this.$store.state.recordList as RecordItem[]
+    type = '-';
+    recordtypeList = recordtypeList;
 
+    created() {
+      this.$store.commit('fetchRecord');
     }
-    get result(){
-      const recordList=this.recordList;
-      const hashTable: {[key: string]: {title: string;items: RecordList}}={};
-      for (let i=0;i<recordList.length;i++){
-        const [date,time]=recordList[i].createdAt!.split('T')
-        hashTable[date]=hashTable[date]||{title:date,items:[]}
-        hashTable[date].items.push(recordList[i])
+
+    get recordList() {
+      return this.$store.state.recordList as RecordItem[];
+    }
+
+    get groupList() {
+      const recordList = this.recordList;
+
+      const newList = clone(recordList).filter(item => item.type === this.type).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
+
+      const hashTable: HashTable = [{title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]]}];
+      for (let i = 1; i < newList.length; i++) {
+        const current = newList[i];
+        const last = hashTable[hashTable.length - 1];
+        if (dayjs(current.createdAt).isSame(dayjs(last.title), 'day')) {
+          last.items.push(current);
+        } else {
+          hashTable.push({title: dayjs(current.createdAt).format('YYYY-MM-DD'), items: [current]});
+        }
+
       }
-      return hashTable
-
+      hashTable.map(group => {
+        group.total = group.items.reduce((sum, item) => {return sum + item.amount;}, 0);
+      });
+      return hashTable;
     }
+
     tagString(tags: Tag[]) {
-      return tags.length === 0 ? '无' : tags.map(item=>item.name).join(',');
+      return tags.length === 0 ? '无' : tags.map(item => item.name).join(',');
     }
 
+    beautify(string: string) {
+      const now = new Date();
 
-    type='-';
-intervalList=intervalList
-    recordtypeList=recordtypeList
-    interval='day';
-created(){
-  this.$store.commit('fetchRecord')
-
-
-}
-
+      if (dayjs(string).isSame(now, 'day')) {
+        return '今天';
+      } else if (dayjs(string).isSame((now.valueOf() - 86400 * 1000), 'day')) {
+        return '昨天';
+      } else if (dayjs(string).isSame(dayjs().subtract(2, 'day'), 'day')) {
+        return '前天';
+      } else if (dayjs(string).isSame(now, 'year')) {
+        return dayjs(string).format('M月D日');
+      } else {
+        return dayjs(string).format('yyyy年MM月DD日');
+      }
+    }
   }
 </script>
 
 <style lang="scss" scoped>
-   ::v-deep .tags-item{
-   background: white;
+  ::v-deep .tags-item {
+    background: white;
 
-    &.selected{
+    &.selected {
       background: #c4c4c4;
     }
-    &::after{
+
+    &::after {
       display: none;
     }
   }
-  ::v-deep .interval-item{
-height:46px;
+
+  ::v-deep .interval-item {
+    height: 46px;
   }
-   %item {
-     padding: 8px 16px;
-     line-height: 24px;
-     display: flex;
-     justify-content: space-between;
-     align-content: center;
 
-   }
-   .title {
-     @extend %item;
-   }
-   .record {
-     background: white;
-     @extend %item;
+  %item {
+    padding: 8px 16px;
+    line-height: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
 
-   }
-   .notes {
-     margin-right: auto;
-     margin-left: 16px;
-     color: #999;
-   }
+  }
+
+  .title {
+    @extend %item;
+  }
+
+  .record {
+    background: white;
+    @extend %item;
+
+  }
+
+  .notes {
+    margin-right: auto;
+    margin-left: 16px;
+    color: #999;
+  }
 </style>

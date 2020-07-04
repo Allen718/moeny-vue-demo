@@ -10,6 +10,11 @@ type Tag ={
   id: string;
   name: string;
 }
+type HashTable={
+  title: string;
+  total?: number;
+  items: RecordList;
+}[ ]
 // type TagListModel={
 //   data: Tag[];
 //   fetch: () => Tag[];

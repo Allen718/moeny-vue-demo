@@ -15,11 +15,6 @@
   import {Component, Prop, Watch} from 'vue-property-decorator';
   @Component
   export default class Notes extends Vue{
-
-//     Input(event:KeyboardEvent){
-// const input=event.target as HTMLInputElement
-//       this.value=input.value
-//     }
     @Prop({default:''})value!: string
     @Prop({required:true})fieldName!: string
     @Prop()placeholder?: string
