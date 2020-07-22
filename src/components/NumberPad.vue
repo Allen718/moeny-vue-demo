@@ -22,7 +22,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component, Prop} from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
 
   @Component
   export default class NumberPad extends Vue {
@@ -103,7 +103,7 @@
           width: 25*2%;
         }
 
-        $bg: #f2f2f2;
+        $bg:#4788FF;
 
         &:nth-child(1) {
           background: $bg;

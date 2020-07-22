@@ -12,7 +12,10 @@
   }
   export default {
     name: 'Icon',
-    props:['name']
+    props:['name'],
+    created(){
+      console.log(this.name)
+    }
   };
 </script>
 
