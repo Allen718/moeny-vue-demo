@@ -1,6 +1,7 @@
 <template>
   <Layout>
     <tabs :data-source="recordtypeList" :value.sync="type" class-prefix="tags"/>
+    <Echarts :options="x"/>
     <ol>
       <li v-for="(group,index) in groupList" :key="index">
         <h3 class="title">
@@ -28,19 +29,40 @@
   import recordtypeList from '@/constants/recordtypeList';
   import dayjs, {isDayjs} from 'dayjs';
   import clone from '@/lib/clone';
+  import Echarts from '@/components/Echarts.vue';
 
   @Component({
-      components: {Tabs, Types}
+      components: {Tabs, Types, Echarts}
     }
   )
   export default class Statistics extends Vue {
+
     type = '-';
     recordtypeList = recordtypeList;
 
     created() {
       this.$store.commit('fetchRecord');
     }
+get x(){
+      return{
+    tooltip:{
+      show:true,
+    },
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          type: 'line'
+        }],
 
+      }
+
+}
     get recordList() {
       return this.$store.state.recordList as RecordItem[];
     }
@@ -90,6 +112,10 @@
 </script>
 
 <style lang="scss" scoped>
+  .echarts{
+    width: 100%;
+    min-height: 50vh;
+  }
   ::v-deep .tags-item {
     background: white;
 
