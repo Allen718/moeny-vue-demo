@@ -23,6 +23,6 @@
 <style lang="scss" scoped>
   .EchartsWrapper{
     width: 100%;
-    height:400px;
+    height:40vh;
   }
 </style>

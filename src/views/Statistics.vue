@@ -1,7 +1,9 @@
 <template>
   <Layout>
     <tabs :data-source="recordtypeList" :value.sync="type" class-prefix="tags"/>
-    <Echarts :options="x"/>
+   <div class="echartsWrapper"  ref="echarts">
+     <Echarts :options="x"/>
+   </div>
     <ol>
       <li v-for="(group,index) in groupList" :key="index">
         <h3 class="title">
@@ -45,23 +47,49 @@
     }
 get x(){
       return{
+        grid:{
+          left:0,
+          right:0
+        },
     tooltip:{
       show:true,
+      formatter:'{c}',
+      position:'top',
+      backgroundColor:'#1F01FF'
     },
         xAxis: {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          axisTick: {
+            alignWithLabel:true
+          },
+          data: ['1', '2', '3', '4', '5', '6', '7','8','9','10',
+            '11', '12', '13', '14', '15', '16', '17','18','19','20',
+            '21', '22', '23', '24', '25', '26', '27','28','29','30'
+          ]
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          show:false,
         },
         series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
+            symbolSize:15,
+            symbol: 'circle',
+          itemStyle:{
+            color:'#1F01FF',
+          },
+          data: [20, 34, 26, 35, 45, 24, 50,46,47,53,
+                 60,54, 12, 33, 48, 29, 58,46,49,53,
+                 60,54, 12, 33, 48, 29, 50,46,47,53,],
           type: 'line'
-        }],
+        },
+          ],
 
       }
 
+}
+mounted(){
+  const div=(this.$refs.echarts as HTMLDivElement)
+  div.scrollLeft=div.scrollWidth
 }
     get recordList() {
       return this.$store.state.recordList as RecordItem[];
@@ -112,9 +140,13 @@ get x(){
 </script>
 
 <style lang="scss" scoped>
-  .echarts{
-    width: 100%;
-    min-height: 50vh;
+  .echartsWrapper{
+    overflow: auto;
+    &::-webkit-scrollbar { display: none }
+    >div{
+      width: 430%;
+      min-height: 40vh;
+    }
   }
   ::v-deep .tags-item {
     background: white;
