@@ -32,6 +32,7 @@
   import dayjs, {isDayjs} from 'dayjs';
   import clone from '@/lib/clone';
   import Echarts from '@/components/Echarts.vue';
+    import _ from 'lodash'
 
   @Component({
       components: {Tabs, Types, Echarts}
@@ -41,12 +42,38 @@
 
     type = '-';
     recordtypeList = recordtypeList;
-
     created() {
       this.$store.commit('fetchRecord');
     }
 get x(){
-      return{
+const part1=(this.recordList.map(r => _.pick(r, ['createdAt','amount']
+  )));
+  const today=dayjs().format('YYYY-MM-DD')
+  const array=[]
+   for(let i=0;i<=28;i++){
+    const  date=dayjs(today).subtract(i,'day').format('YYYY-MM-DD')
+    const part2=part1.filter(item=>item.createdAt===date)
+     if(part2.length>=1){
+      const value= part2.reduce((sum,i)=>{sum+=i.amount
+       return sum},0)
+       array.push({date:date,value:value})
+    }else{
+       array.push({date:date,value:0})
+     }
+
+   }
+   array.sort((a,b)=>{
+     if(a.date>b.date){return 1}
+     else if(a.date===b.date){return 0}
+     else{return -1}
+   })
+ const keys=array.map(item=>item.date)
+  const values=array.map(item=>item.value)
+
+
+
+
+  return{
         grid:{
           left:0,
           right:0
@@ -62,10 +89,7 @@ get x(){
           axisTick: {
             alignWithLabel:true
           },
-          data: ['1', '2', '3', '4', '5', '6', '7','8','9','10',
-            '11', '12', '13', '14', '15', '16', '17','18','19','20',
-            '21', '22', '23', '24', '25', '26', '27','28','29','30'
-          ]
+          data: keys,
         },
         yAxis: {
           type: 'value',
@@ -77,9 +101,7 @@ get x(){
           itemStyle:{
             color:'#1F01FF',
           },
-          data: [20, 34, 26, 35, 45, 24, 50,46,47,53,
-                 60,54, 12, 33, 48, 29, 58,46,49,53,
-                 60,54, 12, 33, 48, 29, 50,46,47,53,],
+          data: values,
           type: 'line'
         },
           ],
