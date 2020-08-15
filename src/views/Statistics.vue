@@ -86,6 +86,12 @@ const part1=(this.recordList.map(r => _.pick(r, ['createdAt','amount']
     },
         xAxis: {
           type: 'category',
+          axisLabel:{
+              formatter: function (value: string, index: number) {
+                return value.substr(5)
+              }
+
+          },
           axisTick: {
             alignWithLabel:true
           },
