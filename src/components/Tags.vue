@@ -33,14 +33,12 @@
       if (!name) {
         return window.alert('标签名不能为空')
       } else  {
-       this.$store.commit('createTag','name')
+       this.$store.commit('createTag',name)
 
       }
         }
     created(){
-
     this.$store.commit('fetchTag')
-
         }
   }
 </script>

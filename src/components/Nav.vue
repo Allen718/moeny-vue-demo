@@ -2,7 +2,7 @@
   <nav >
   <router-link to="./money" class="item" active-class="selected"><Icon name="money"/>记账</router-link>
     <router-link to="./labels" class="item" active-class="selected"> <Icon name="label"/>标签</router-link>
-  <router-link to="./statistics" class="item" active-class="selected"><Icon name="statistics"/>数据</router-link>
+  <router-link to="./statistics" class="item" active-class="selected"><Icon name="statistics"/>明细</router-link>
 </nav>
 </template >
 <script lang="ts">

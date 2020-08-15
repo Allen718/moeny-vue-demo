@@ -26,7 +26,7 @@
   import {Component} from 'vue-property-decorator';
   import Tabs from '@/components/Tabs.vue';
   import recordtypeList from '@/constants/recordtypeList';
-  import dayjs from 'dayjs';
+  import dayjs, {isDayjs} from 'dayjs';
   import clone from '@/lib/clone';
 
   @Component({
@@ -47,12 +47,12 @@
 
     get groupList() {
       const recordList = this.recordList;
-
       const newList = clone(recordList).filter(item => item.type === this.type).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
-
+     if(newList.length===0){return [] as HashTable}
       const hashTable: HashTable = [{title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]]}];
       for (let i = 1; i < newList.length; i++) {
         const current = newList[i];
+
         const last = hashTable[hashTable.length - 1];
         if (dayjs(current.createdAt).isSame(dayjs(last.title), 'day')) {
           last.items.push(current);
@@ -94,7 +94,7 @@
     background: white;
 
     &.selected {
-      background: #c4c4c4;
+      background: blue;
     }
 
     &::after {

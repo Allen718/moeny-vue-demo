@@ -3,14 +3,20 @@
     <NumberPad @update:value="onUpdateAmount" @submit="saveRecord"/>
 
     <div class="notesWrapper">
-    <Notes @update:value="onUpdateNotes"
-           field-name="备注"
-           :value="record.notes"
-           placeholder="在这里输入备注"/>
+      <Notes @update:value="onUpdateDate"
+             type="date"
+             field-name="日期"
+             :value="record.createdAt"
+             placeholder="在这里输入日期"/>
+      <Notes @update:value="onUpdateNotes"
+             type="text"
+             field-name="备注"
+             :value="record.notes"
+             placeholder="在这里输入备注"/>
     </div>
     <Tags @update:value="onUpdateTags"/>
-    <tabs  @update:value="onUpdateType"
-           :data-source="recordtypeList" :value.sync="type"/>
+    <tabs @update:value="onUpdateType"
+          :data-source="recordtypeList" :value.sync="type"/>
   </Layout>
 
 </template>
@@ -25,50 +31,54 @@
   import recordtypeList from '@/constants/recordtypeList';
 
   @Component(
-    {components: {Tabs, Tags, Notes, NumberPad},
-   },
+    {
+      components: {Tabs, Tags, Notes, NumberPad},
+    },
   )
-
   export default class Money extends Vue {
-get recordList(){
-  return this.$store.state.recordList as RecordItem[]
-}
-    record: RecordItem={
-      tags:[],
-    notes:'',
-    type:'-',
-    amount:0 ,
+    get recordList() {
+      return this.$store.state.recordList as RecordItem[];
+    }
 
-  }
-  recordtypeList=recordtypeList
-   type='-'
+    record: RecordItem = {
+      tags: [],
+      notes: '',
+      type: '-',
+      amount: 0,
+      createdAt: new Date().toISOString()
+
+    };
+    recordtypeList = recordtypeList;
+    type = '-';
 
 
-
-created(){
-      this.$store.commit('fetchRecord')
-}
-
+    created() {
+      this.$store.commit('fetchRecord');
+    }
 
 
     onUpdateNotes(value: string) {
-      this.record.notes =value
+      this.record.notes = value;
+    }
+    onUpdateDate(value: string) {
+      this.record.createdAt = value;
+    }
+    onUpdateTags(value: Tag[]) {
+      this.record.tags = value;
     }
 
-     onUpdateTags(value: Tag[]){
-      this.record.tags=value
-}
-onUpdateType(value: string){
-  this.record.type=value
-}
+    onUpdateType(value: string) {
+      this.record.type = value;
+    }
+
     onUpdateAmount(value: string) {
-    this.record.amount=parseFloat(value)
-    }
-    saveRecord(){
-      this.$store.commit('createRecord',this.record)
-      this.record.notes=''
+      this.record.amount = parseFloat(value);
     }
 
+    saveRecord() {
+      this.$store.commit('createRecord', this.record);
+      this.record.notes = '';
+    }
 
 
   }
@@ -81,8 +91,8 @@ onUpdateType(value: string){
   }
 </style>
 <style lang="scss" scoped>
-.notesWrapper{
-  background: #f5f5f5;
-  padding: 10px 0;
-}
+  .notesWrapper {
+    background: #f5f5f5;
+    padding: 10px 0;
+  }
 </style>

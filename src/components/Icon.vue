@@ -13,9 +13,6 @@
   export default {
     name: 'Icon',
     props:['name'],
-    created(){
-      console.log(this.name)
-    }
   };
 </script>
 

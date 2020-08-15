@@ -7,7 +7,6 @@
           <li><a href="./Money.vue">完成</a></li>
         </ul>
       </div>
-
       <div class="tags">
         <router-link class="tag"
                      v-for="tag in tags"
@@ -18,15 +17,12 @@
           </div>
           <span>{{tag.name}}</span>
         </router-link>
-        <div class='add'>
+        <div class='add' @click="createTag">
           <svg class="icon">
             <use xlink:href="#add"/>
           </svg>
           <button @click="createTag">新增</button>
         </div>
-
-
-
       </div>
     </div>
   </Layout>
