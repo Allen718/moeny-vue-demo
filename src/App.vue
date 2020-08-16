@@ -1,5 +1,8 @@
 <template>
-    <router-view/>
+    <div id="app">
+        <router-view/>
+    </div>
+
 </template>
 <script lang="js">
 export default {
@@ -19,8 +22,9 @@ export default {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #333333;
+    max-width:375px;
+    margin: 0 auto;
 }
 
 

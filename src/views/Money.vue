@@ -1,7 +1,6 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad @update:value="onUpdateAmount" @submit="saveRecord"/>
-
     <div class="notesWrapper">
       <Notes @update:value="onUpdateDate"
              type="date"
@@ -14,7 +13,7 @@
              :value="record.notes"
              placeholder="在这里输入备注"/>
     </div>
-    <Tags @update:value="onUpdateTags"/>
+    <Tags @update:value="onUpdateTags" :value="record.tags"/>
     <tabs @update:value="onUpdateType"
           :data-source="recordtypeList" :value.sync="type"/>
   </Layout>
@@ -64,6 +63,7 @@
       this.record.createdAt = value;
     }
     onUpdateTags(value: Tag[]) {
+
       this.record.tags = value;
     }
 
@@ -78,6 +78,7 @@
     saveRecord() {
       this.$store.commit('createRecord', this.record);
       this.record.notes = '';
+      this.record.tags=[]
     }
 
 

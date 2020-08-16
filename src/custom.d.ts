@@ -27,4 +27,5 @@ type RootState={
   recordList: RecordItem[];
   tagList: Tag[];
   CurrentTag?: Tag;
+  createTagError: Error | null;
 }

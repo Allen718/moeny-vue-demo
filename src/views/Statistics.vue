@@ -4,7 +4,7 @@
     <div class="echartsWrapper" ref="echarts">
       <Echarts :options="options"/>
     </div>
-    <ol>
+    <ol v-if="this.groupList.length>0">
       <li v-for="(group,index) in groupList" :key="index">
         <h3 class="title">
           {{beautify(group.title)}}<span>{{group.total}}</span>
@@ -18,6 +18,10 @@
           </li>
         </ol>
       </li>
+    </ol>
+    <ol v-else class="notesWrapper">
+      <li class="notes">对不起，暂无记录</li>
+      <Icon name="错误"></Icon>
     </ol>
 
   </Layout>
@@ -129,7 +133,6 @@
       const hashTable: HashTable = [{title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]]}];
       for (let i = 1; i < newList.length; i++) {
         const current = newList[i];
-
         const last = hashTable[hashTable.length - 1];
         if (dayjs(current.createdAt).isSame(dayjs(last.title), 'day')) {
           last.items.push(current);
@@ -219,5 +222,24 @@
     margin-right: auto;
     margin-left: 16px;
     color: #999;
+  }
+  .notesWrapper{
+    display: flex;
+   flex-direction: column;
+    padding:0 30px;
+    justify-content: center;
+    align-items: center;
+
+    >li{
+      display: flex;
+      font-size: 18px;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+    >.icon{
+      width: 40px;
+      height:40px;
+    }
   }
 </style>

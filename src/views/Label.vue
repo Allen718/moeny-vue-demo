@@ -47,11 +47,18 @@
 
     createTag() {
       const name = window.prompt('请输入标签名');
-      if (name) {
-        this.$store.commit('createTag', name);
+      if (!name) {
+        return window.alert('标签名不能为空')
+      } else {
+        this.$store.commit('createTag', name)
+        if (this.$store.state.createTagError) {
+          const map: { [key: string]: string } = {
+            'tag name duplicated': '标签名重复了'
+          };
+          window.alert(map[this.$store.state.createTagError.message] || '未知错误');
+        }
       }
-    }
-  }
+      }}
 </script>
 
 <style lang="scss" scoped>
