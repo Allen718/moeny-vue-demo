@@ -3,17 +3,26 @@
   </div>
 </template>
 <script lang="ts">
-  import {Component, Prop,Vue} from 'vue-property-decorator';
-  import Echarts, {EChartOption} from 'echarts';
+  import {Component, Prop,Vue,Watch} from 'vue-property-decorator';
+  import echarts, {EChartOption, ECharts} from 'echarts';
   @Component
   export default class Echart extends Vue {
- @Prop()options?: EChartOption
+    chart?: ECharts ;
+  @Prop()options?: EChartOption
+    @Watch('options')
+    onOptionsChanged(val: EChartOption) {
+        this.chart!.setOption(val);
+
+    }
     mounted(){
-   if(this.options===undefined){
-    return  console.error('options为空')
-   }
-      const myChart = Echarts.init(this.$refs.chartsWrapper as HTMLDivElement);
-      myChart.setOption(this.options)
+      if (this.options === undefined) {
+        return console.error('options 为空');
+      }else{
+        this.$refs
+        this.chart = echarts.init(this.$refs.chartsWrapper as HTMLDivElement);
+        this.chart.setOption(this.options)
+      }
+
     }
 
 
