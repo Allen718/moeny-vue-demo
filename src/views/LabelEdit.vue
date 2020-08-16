@@ -6,10 +6,12 @@
       <span class="rightIcon"></span>
     </div>
     <div class="notes-wrapper">
-    <Notes field-name="标签名"
+    <Notes type="text"
+      field-name="标签名"
            placeholder="在这里编辑标签"
-           :value="tag.name"
-           @update:value="updateTag" />
+           :value="this.tag.name"
+            @update:value="updateTag"
+      />
     </div>
     <div class="button-wrapper">
       <Button @click="removeTag">删除标签</Button>
@@ -19,7 +21,7 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import {Component} from 'vue-property-decorator';
+  import {Component, Watch} from 'vue-property-decorator';
   import Notes from '@/components/Notes.vue';
   import Button from '@/components/Button.vue';
 
@@ -28,6 +30,8 @@
 
 
   export default class LabelEdit extends Vue {
+
+
     get tag() {
       return this.$store.state.CurrentTag as Tag
     }
@@ -40,12 +44,12 @@
         this.$router.replace('/404')
       }
     }
-
     updateTag(name: string) {
       if (this.tag) {
-        this.$store.commit('updateTag', name)
+        this.$store.commit('updateTag', {name,id:this.tag.id} )
       }
     }
+
 
     removeTag() {
       if (this.tag) {
@@ -56,6 +60,7 @@
     goBack(){
       this.$router.back()
     }
+
   }
 
 
